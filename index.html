@@ -108,7 +108,6 @@
         <h1>Enter Vehicle Number</h1>
         <form id="vehicleForm">
             <input type="text" id="vehicleNumber" placeholder="Vehicle Number" required>
-            <input type="text" id="accessKey" placeholder="Enter Key" required>
             <br>
             <button type="submit" id="submitButton">Submit</button>
         </form>
@@ -123,14 +122,6 @@
         </p>
     </div>
     <script>
-        async function fetchKeyFromPastebin(url) {
-            const response = await fetch(url, { cache: 'no-store' });
-            if (!response.ok) {
-                throw new Error('Failed to fetch key');
-            }
-            return response.text();
-        }
-
         async function fetchVehicleInfo(vehicleNumber) {
             const submitButton = document.getElementById('submitButton');
             const loader = document.getElementById('loader');
@@ -170,26 +161,10 @@
             }
         }
 
-        document.getElementById('vehicleForm').addEventListener('submit', async function(event) {
+        document.getElementById('vehicleForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const vehicleNumber = document.getElementById('vehicleNumber').value;
-            const accessKey = document.getElementById('accessKey').value;
-
-            try {
-                const validKey = await fetchKeyFromPastebin('https://pastebin.com/raw/72ASKzA2'); // Use your Pastebin URL
-                console.log('Fetched Key:', validKey.trim()); // Log the fetched key
-                console.log('Entered Key:', accessKey.trim()); // Log the entered key
-
-                if (accessKey.trim() === validKey.trim()) {
-                    fetchVehicleInfo(vehicleNumber);
-                } else {
-                    const output = document.getElementById('output');
-                    output.innerHTML = 'Get Key From Knox<br>Instagram <a href="https://www.instagram.com/knox_empire" target="_blank">@knox_empire</a> <a href="https://www.instagram.com/knox_venture" target="_blank">@knox_venture</a>';
-                }
-            } catch (error) {
-                const output = document.getElementById('output');
-                output.innerHTML = `An error occurred while validating the key: ${error.message}`;
-            }
+            fetchVehicleInfo(vehicleNumber);
         });
 
         function displayVehicleInfo(vehicleInfo) {
